@@ -26,7 +26,7 @@ func main() {
 		data, err = time.Parse(time.DateOnly, os.Args[1])
 
 		if err != nil {
-			fmt.Println("Error: ", err)
+			fmt.Println("Erro ao receber o input:", err)
 			os.Exit(1)
 		}
 
