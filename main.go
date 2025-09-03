@@ -48,7 +48,7 @@ func main() {
 
 	criacaoRU := time.Date(1968, time.March, 3, 0, 0, 0, 0, time.UTC)
 
-	if data.Compare(criacaoRU) < 0 {
+	if data.Before(criacaoRU) {
 		fmt.Println("Data utilizada anterior ao dia da criação do RU.")
 		os.Exit(1)
 	}
