@@ -2,10 +2,19 @@ package main
 
 import (
 	"fmt"
+	"io"
 	"net/http"
 	"os"
 	"time"
+	"encoding/xml"
 )
+
+type Cardapio struct {
+	Title 				string `xml:"title"`
+	Link			 		string `xml:"link"`
+	Description 	string `xml:"description"`
+	PubDate 			string `xml:"pubDate"`
+}
 
 var diasDaSemana = []string {
 	"Domingo",
@@ -70,13 +79,31 @@ func main() {
 		fmt.Println("Erro ao fazer a requisição http:", resp.Status)
 		os.Exit(1)
 	}
-	/*
 
-		Requisitar ao servidor
-		Verificar a resposta
-		Parsear a reposta
-		Imprimir a reposta
+	respBody, err := io.ReadAll(resp.Body)
+	if err != nil {
+		fmt.Println("Erro ao ler o corpo da resposta:", err)
+		os.Exit(1)
+	}
 
-	*/
+	var wrapper struct {
+		Items []Cardapio `xml:"channel>item"`
+	}
+
+	if err := xml.Unmarshal(respBody, &wrapper); err != nil {
+		fmt.Println("Erro ao dar marshall no xml da resposta:", err)
+		os.Exit(1)
+	}
+
+	fmt.Println("---------------------------------------")
+	for _, item := range wrapper.Items {
+		fmt.Printf("%s\n\n", item.Title)
+		fmt.Printf("%s\n", item.Description)
+		fmt.Println(item.PubDate)
+
+		if len(wrapper.Items) > 1 {
+			fmt.Println("---------------------------------------")
+		}
+	}
 
 }
