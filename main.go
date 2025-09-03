@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"net/http"
 	"os"
 	"time"
 )
@@ -49,6 +50,24 @@ func main() {
 
 	if data.Compare(criacaoRU) < 0 {
 		fmt.Println("Data utilizada anterior ao dia da criação do RU.")
+		os.Exit(1)
+	}
+
+	url := fmt.Sprintf("https://ru.ufes.br/cardapio/rss/%s", data.Format(time.DateOnly))
+	resp, err := http.Get(url)
+
+	if err != nil {
+		fmt.Println("Erro ao fazer a requisição http:", err)
+		os.Exit(1)
+	}
+
+	if resp.StatusCode != 200 {
+		if resp.StatusCode == 404 {
+			fmt.Println("Não foi encontrado cardápio para este dia")
+			os.Exit(1)
+		}
+
+		fmt.Println("Erro ao fazer a requisição http:", resp.Status)
 		os.Exit(1)
 	}
 	/*
