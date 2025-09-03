@@ -45,6 +45,12 @@ func main() {
 		fmt.Printf("Tomando como base o dia %s, %s.\n", data.Format(time.DateOnly), diasDaSemana[data.Weekday()])
 	}
 
+	criacaoRU := time.Date(1968, time.March, 3, 0, 0, 0, 0, time.UTC)
+
+	if data.Compare(criacaoRU) < 0 {
+		fmt.Println("Data utilizada anterior ao dia da criação do RU.")
+		os.Exit(1)
+	}
 	/*
 
 		Requisitar ao servidor
