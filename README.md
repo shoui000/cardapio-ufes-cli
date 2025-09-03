@@ -12,3 +12,4 @@ _Obs.: O feed não é completo e por algum motivo não possui informações ante
 
  - Adicionar a função de acessar o cardápio de outros campi (Ex.: São Mateus e Alegre)
  - Fazer o programa ser compatível com o comando "go install"
+ - Mostrar de forma mais bonita no terminal
